@@ -7,8 +7,8 @@ int main()
     int perc[26]={0};
     char nomef[100];
     printf("Qual o nome do ficheiro? ");
-    scanf("%s", nomef);
-    f = fopen(nomef, "r");
+    //scanf("%s", nomef);
+    f = fopen("lusiadas.txt", "r");
     while (!feof(f))
     {
         c = getc(f);
@@ -53,8 +53,8 @@ int main()
     printf("O número total de letras do ficheiro é: %d\n", total);
     for (int i = 0; i < 26; i++)
     {
-        printf("Letra %c = %.2f%%\n", i +'a', (float)((perc[i]/total)*100));
+        printf("Letra %c = %.2f%%\n", i +'a', ((float)perc[i]/total)*100);
     }
-    
+    printf("%d\n", 'a'-'A');
     return 0;
 }
