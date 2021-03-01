@@ -55,6 +55,5 @@ int main()
     {
         printf("Letra %c = %.2f%%\n", i +'a', ((float)perc[i]/total)*100);
     }
-    printf("%d\n", 'a'-'A');
     return 0;
 }
