@@ -4,20 +4,17 @@ int main()
 {
     FILE *f;
     int c, total = 0;
-    int perc[26]={0};
+    int perc[26]={};
     char nomef[100];
-    printf("Qual o nome do ficheiro? ");
+    //printf("Qual o nome do ficheiro? ");
     //scanf("%s", nomef);
     f = fopen("lusiadas.txt", "r");
     while (!feof(f))
     {
         c = getc(f);
-        if (c >= 'A' && c <= 'Z')
-        {
-            c += 32;
-        }
+       
 
-        else if ((c >= 192 && c <= 195) || (c >= 224 && c <= 227))
+        if ((c >= 192 && c <= 195) || (c >= 224 && c <= 227))
         {
             c = 'a';
         }
@@ -40,6 +37,10 @@ int main()
         else if (c == 199 || c == 231)
         {
             c = 'c';
+        }
+        else if (c >= 'A' && c <= 'Z')
+        {
+            c += 32;
         }
 
         if (c >= 'a' && c <= 'z')
