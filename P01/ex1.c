@@ -6,9 +6,9 @@ int main()
     int c, total = 0;
     int perc[26]={};
     char nomef[100];
-    //printf("Qual o nome do ficheiro? ");
-    //scanf("%s", nomef);
-    f = fopen("lusiadas.txt", "r");
+    printf("Qual o nome do ficheiro? ");
+    scanf("%s", nomef);
+    f = fopen(nomef, "r");
     while (!feof(f))
     {
         c = getc(f);

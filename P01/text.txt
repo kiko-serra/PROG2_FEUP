@@ -1,0 +1,5 @@
+The issuance of academic certifications is heavily centralized. If diplomas, degrees, or other credentials are damaged or lost, the re-issue process is often costly, and the issuing institution might no longer exist. Sharing these credentials is also difficult, as academic achievements are traditionally issued in physical form, which makes it almost impossible to share when and where needed.
+
+Atala PRISM is an ID & credentials solution built on the Cardano blockchain. Atala PRISM secures academic certifications within an immutable and tamper-proof ecosystem, empowering students to own and share their achievements, and institutions to instantly verify those credentials. Atala PRISM simplifies this process by enabling individuals to instantly share verifiable credentials.
+
+Atala PRISM gives students ownership and control of their academic achievements, with no third-party intermediaries, while removing friction and costly inefficiencies from the process. The result? A seamless way for students and job seekers to prove who they are and what they have achieved.
