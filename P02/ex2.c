@@ -26,6 +26,7 @@ int main(){
     {
         printf("%s\n", vetor_elemento(v, i));
     }
+    printf("Existem %d elementos no vetor\n", vetor_tamanho(v));
     printf("Escreva uma frase: "); fgets(str, NMAX, stdin); str[strlen(str)-1]='\0';
     //se a frase ja existir no vetor apagar essa frase do vetor
     a=vetor_pesquisa(v, str);
@@ -40,11 +41,19 @@ int main(){
     //ordenar o vetor por ordem alfabetica
     vetor_ordena(v);
     //imprimir o vetor
-    printf("Vetor ordenado por ordem alfabética: ");
+    printf("Vetor ordenado por ordem alfabética: \n");
     for (int i = 0; i < 5; i++)
     {
         printf("%s\n", vetor_elemento(v, i));
     }
+    printf("Existem %d elementos no vetor antes de ser invertido\n", vetor_tamanho(v));
+    vetor_inverte(v);
+    for (int i = 0; i < vetor_tamanho(v); i++)
+    {
+        printf("%s\n", v->elementos[i].str);
+    }
+    
+    
 
     return 0;
 }

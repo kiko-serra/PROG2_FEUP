@@ -203,33 +203,53 @@ vetor *vetor_concatena(vetor *vec1, vetor *vec2)
 //inverte os elementos do vetor
 int vetor_inverte(vetor *vec)
 {
+	if (!vec) return -1;
+	
 	char a[100] = {};
-	int l = 4;
-	for (int i = 0; i < 5; i++)
+	int l = vetor_tamanho(vec)-1, i=0;
+	while (i<vetor_tamanho(vec)/2)
 	{
-		if (i < l)
-		{
-			strcpy(a, vec->elementos[i].str);
-			strcpy(vec->elementos[i].str, vec->elementos[l].str);
-			strcpy(vec->elementos[l].str, a);
-			l--;
-		}
-		else
-			break;
+		strcpy(a, vec->elementos[i].str);
+		strcpy(vec->elementos[i].str, vec->elementos[l].str);
+		strcpy(vec->elementos[l].str, a);
+		l--; i++;
 	}
 	return 0;
 }
-//cria um novo vetor com os mesmos elementos do vetor vec mas guardados emposições aleatórias
-vetor *vetor_baralha(vetor *vec)
-{
-	srand(time(NULL));
-	int r;
-	vetor *v;
-	for (int i = 0; i < 5; i++)
-	{
-		r = rand() % 5;
-		v->elementos[r].str = vec->elementos[i].str;
-	}
+//cria um novo vetor com os mesmos elementos do vetor vec mas guardados em posições aleatórias
 
-	return v;
+vetor *vetor_baralha (vetor *vec)
+{
+    if(!vec) return NULL;
+
+    vetor *vec_shuf = vetor_novo();
+
+    // copy vec to vec_shuf
+    for(int i=0; i<vetor_tamanho(vec); i++)
+    {
+        char *v_i = vec->elementos[i].str;
+
+        if(vetor_insere(vec_shuf, v_i, -1) == -1)
+        {
+            printf("Falha a inserir elemento no vetor\n");
+            vetor_apaga(vec_shuf);
+            return NULL;
+        }
+    }
+
+    // shuffle vec_shuf
+    for(int i=0; i<vetor_tamanho(vec_shuf); i++)
+    {
+        // generate random index
+        int ridx = rand()%vetor_tamanho(vec_shuf);
+
+        // keep the reference for the i-th string in a temporary variable
+        v_elemento tmp = vec_shuf->elementos[i];
+
+        // element at position ridx goes to position i and vice-versa
+        vec_shuf->elementos[i] = vec_shuf->elementos[ridx];
+        vec_shuf->elementos[ridx] = tmp;
+    }
+
+    return vec_shuf;
 }

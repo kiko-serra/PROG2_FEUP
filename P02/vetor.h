@@ -102,5 +102,12 @@ int vetor_pesquisa(vetor *vec, const char* str);
 */
 int vetor_ordena(vetor *vec);
 
+vetor *vetor_concatena(vetor *vec1, vetor *vec2);
+
+int vetor_inverte(vetor *vec);
+
+vetor *vetor_baralha(vetor *vec);
+
+
 #define VETOR_H
 #endif
