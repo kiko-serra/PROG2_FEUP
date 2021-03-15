@@ -116,6 +116,22 @@ l_elemento* lista_pesquisa(lista *lst, const char* str, int origem);
  */
 int lista_ordena(lista *lst);
 
+/**
+ * Argumentos: lst apontador para a lista; substring que se pretende pesquisar
+ * Retorno: apontador para uma nova lista com todas as strings que contêm a substring; se
+ *não existirem, retorna uma lista vazia
+*/
+lista *lista_pesquisa_substring(lista * lst, char *substring);
+
+/**
+ * Parametro: lst apontador para a lista
+ * parametro: substring que se pretende procurar
+ */
+lista *lista_pesq_substring_remove(lista *lst, char *substring);
+
+lista* lista_concatena(lista *lst1, lista *lst2);
+
+void lista_imprime(lista *lst);
 
 #define LISTA_H
 #endif
