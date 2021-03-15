@@ -1,5 +1,7 @@
 /*****************************************************************/
-/*      Biblioteca lista ligada | PROG2 | MIEEC | 2018/19        */
+/*      Biblioteca lista ligada | PROG2 | MIEEC | 2018/19
+		para compilar -> clang lista.c -c 
+		compilar sempre que se faz uma alteração       */
 /*****************************************************************/
 
 #include "lista.h"
