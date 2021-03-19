@@ -14,7 +14,15 @@ planta *planta_nova(const char *ID, const char *nome_cientifico, char **alcunhas
 
 colecao *colecao_nova(const char *tipo_ordem)
 {
-	return NULL;
+    colecao *cole = (colecao *)malloc(sizeof(colecao));
+    //guarda memoria para o espaco de colecao
+    if(cole==NULL)
+	    return NULL;
+    
+    cole->tamanho=0;
+    strcpy(cole->tipo_ordem, tipo_ordem);
+    cole->plantas=NULL;
+    return cole;
 }
 int insere_alcunhas(planta *p1, planta *p2)
 {
@@ -26,7 +34,9 @@ int planta_insere(colecao *c, planta *p)
 }
 int colecao_tamanho(colecao *c)
 {
-	return -1;
+    if(c==NULL)
+	    return -1;
+    return c->tamanho;
 }
 
 colecao *colecao_importa(const char *nome_ficheiro, const char *tipo_ordem)
@@ -35,7 +45,11 @@ colecao *colecao_importa(const char *nome_ficheiro, const char *tipo_ordem)
 }
 planta *planta_remove(colecao *c, const char *nomep)
 {
-	return NULL;
+    planta *removida;
+    if (c==NULL)
+        return NULL;
+    //nao esta acabado!!!!!!!!!!!!!!!!!
+	return removida;
 }
 
 int planta_apaga(planta *p)
