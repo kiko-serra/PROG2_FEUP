@@ -101,6 +101,7 @@ int colecao_tamanho(colecao *c)
 
 colecao *colecao_importa(const char *nome_ficheiro, const char *tipo_ordem)
 {
+    //usar strtok com simbolo ","
     return NULL;
 }
 planta *planta_remove(colecao *c, const char *nomep)
