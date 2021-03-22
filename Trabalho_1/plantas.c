@@ -7,28 +7,36 @@
 #include <stdlib.h>
 #include <stdio.h>
 #define N_MAX 200
+int colecao_atualiza(colecao *c, planta *p, int i);
 planta *planta_nova(const char *ID, const char *nome_cientifico, char **alcunhas, int n_alcunhas, int n_sementes)
 {
-    planta *plt = (planta *) malloc(sizeof(planta));
-    if(plt == NULL)
-    return NULL;
-    
-    if(sizeof(ID)>10 || ID==NULL) return NULL;
-    if(sizeof(nome_cientifico)>200 || nome_cientifico==NULL) return NULL;
-    if(n_sementes<0) return NULL;
+    planta *plt = (planta *)malloc(sizeof(planta));
+    if (plt == NULL)
+        return NULL;
+
+    if (sizeof(ID) > 10 || ID == NULL)
+        return NULL;
+    if (sizeof(nome_cientifico) > 200 || nome_cientifico == NULL)
+        return NULL;
+    if (n_sementes < 0)
+        return NULL;
     strcpy(plt->ID, ID);
     strcpy(plt->nome_cientifico, nome_cientifico);
-    plt->n_sementes=n_sementes;
+    plt->n_sementes = n_sementes;
 
-    if(n_alcunhas>0){
-        plt->n_alcunhas=n_alcunhas;
-        for(int i=0;i<n_alcunhas;i++){
-        
-            if(i>0){
-                plt->alcunhas=(char **) realloc(plt->alcunhas, sizeof(char*)*(i+1));
+    if (n_alcunhas > 0)
+    {
+        plt->n_alcunhas = n_alcunhas;
+        for (int i = 0; i < n_alcunhas; i++)
+        {
+
+            if (i > 0)
+            {
+                plt->alcunhas = (char **)realloc(plt->alcunhas, sizeof(char *) * (i + 1));
             }
-            else plt->alcunhas= (char **)malloc(sizeof(char*));
-            plt->alcunhas[i]= (char *)malloc(sizeof(char) * strlen(alcunhas[i]+1)); 
+            else
+                plt->alcunhas = (char **)malloc(sizeof(char *));
+            plt->alcunhas[i] = (char *)malloc(sizeof(char) * strlen(alcunhas[i] + 1));
             strcpy(plt->alcunhas[i], alcunhas[i]);
         }
     }
@@ -38,7 +46,8 @@ planta *planta_nova(const char *ID, const char *nome_cientifico, char **alcunhas
 
 colecao *colecao_nova(const char *tipo_ordem)
 {
-    if(tipo_ordem==NULL) return NULL;
+    if (tipo_ordem == NULL)
+        return NULL;
 
     colecao *cole = (colecao *)malloc(sizeof(colecao));
     //guarda memoria para o espaco de colecao
@@ -59,7 +68,46 @@ int insere_alcunhas(planta *p1, planta *p2)
 }
 int planta_insere(colecao *c, planta *p)
 {
-    return -1;
+    if (c == NULL || p == NULL)
+    {
+        return -1;
+    }
+    for (int i = 0; i < c->tamanho; i++)
+    {
+        if (!strcmp(c->plantas[i]->ID, p->ID))
+        {
+            //se passarem valores de alcunhas ou sementes negativos colecao_atualiza da erro
+            if (colecao_atualiza(c, p, i) == -1)
+            {
+                return -1;
+            }
+            else
+                return 1;
+        }
+    }
+    c->plantas = (planta **)realloc(c->plantas, sizeof(planta *) * (c->tamanho + 1));
+    c->tamanho++;
+    strcpy(c->plantas[c->tamanho - 1]->ID, p->ID);
+    strcpy(c->plantas[c->tamanho - 1]->nome_cientifico, p->nome_cientifico);
+    c->plantas[c->tamanho - 1]->n_sementes = p->n_sementes;
+    c->plantas[c->tamanho - 1]->n_alcunhas = p->n_alcunhas;
+
+    printf("%s\n", c->plantas[c->tamanho - 1]->ID);
+    c->plantas[c->tamanho - 1]->alcunhas = (char **)malloc(sizeof(char *));
+    for (int i = 0; i < p->n_alcunhas && p->n_alcunhas > 0; i++)
+    {
+        if (i > 0)
+        {
+            c->plantas[c->tamanho - 1]->alcunhas = (char **)realloc(c->plantas[i]->alcunhas, sizeof(char *) * (i + 1));
+        }
+        else
+            c->plantas[c->tamanho - 1]->alcunhas = (char **)malloc(sizeof(char *));
+        c->plantas[c->tamanho - 1]->alcunhas[i] = (char *)malloc(sizeof(char) * strlen(p->alcunhas[i] + 1));
+        strcpy(c->plantas[c->tamanho - 1]->alcunhas[i], p->alcunhas[i]);
+    }
+
+    colecao_reordena(c, c->tipo_ordem);
+    return 0;
 }
 int colecao_tamanho(colecao *c)
 {
@@ -87,7 +135,7 @@ planta *planta_remove(colecao *c, const char *nomep)
 
 int planta_apaga(planta *p)
 {
-    if (p==NULL)
+    if (p == NULL)
     {
         return -1;
     }
@@ -96,7 +144,7 @@ int planta_apaga(planta *p)
     {
         free(p->alcunhas[i]);
     }
-    
+
     free(p->alcunhas);
     free(p);
     return 0;
@@ -107,12 +155,12 @@ int colecao_apaga(colecao *c)
     if (c == NULL)
         return -1;
     //percorre todo o vetor plantas da colecao e liberta a memoria de cada apontador
-    for(i=0;i<c->tamanho;i++)
+    for (i = 0; i < c->tamanho; i++)
     {
         planta_apaga(c->plantas[i]);
     }
     free(c->plantas);
-    
+
     free(c);
     c = NULL;
     return 0;
@@ -125,7 +173,7 @@ int colecao_reordena(colecao *c, const char *tipo_ordem)
 {
     int i, j;
     planta *aux;
-    if (c == NULL || aux == NULL || tipo_ordem==NULL)
+    if (c == NULL || aux == NULL || tipo_ordem == NULL)
     {
         return -1;
     }
@@ -166,4 +214,35 @@ int colecao_reordena(colecao *c, const char *tipo_ordem)
     }
 
     return 1;
+}
+
+//atualiza o número de sementes, alcunhas e alcunhas repetidas
+int colecao_atualiza(colecao *c, planta *p, int i)
+{
+    //c->plantas[i]->n_alcunhas += p->n_alcunhas;
+    int t = 0;
+    if (p->n_sementes < 0 || p->n_alcunhas < 0)
+    {
+        return -1;
+    }
+
+    c->plantas[i]->n_sementes += p->n_sementes;
+    for (int j = 0; j < p->n_alcunhas; j++)
+    {
+        t = 0;
+        for (int k = 0; k < c->plantas[i]->n_alcunhas; k++)
+        {
+            if (!strcmp(c->plantas[i]->alcunhas[k], p->alcunhas[j]))
+                t++;
+        }
+        if (t == 0)
+        {
+            c->plantas[i]->n_alcunhas++;
+
+            c->plantas[i]->alcunhas = (char **)realloc(c->plantas[i]->alcunhas, sizeof(char *) * (c->plantas[i]->n_alcunhas));
+            c->plantas[i]->alcunhas[(c->plantas[i]->n_alcunhas) - 1] = (char *)malloc(sizeof(char) * (strlen(p->alcunhas[j]) + 1));
+            strcpy(c->plantas[i]->alcunhas[(c->plantas[i]->n_alcunhas) - 1], p->alcunhas[j]);
+        }
+    }
+    return 0;
 }
