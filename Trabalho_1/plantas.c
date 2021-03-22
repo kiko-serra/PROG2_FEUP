@@ -87,24 +87,7 @@ int planta_insere(colecao *c, planta *p)
     }
     c->plantas = (planta **)realloc(c->plantas, sizeof(planta *) * (c->tamanho + 1));
     c->tamanho++;
-    strcpy(c->plantas[c->tamanho - 1]->ID, p->ID);
-    strcpy(c->plantas[c->tamanho - 1]->nome_cientifico, p->nome_cientifico);
-    c->plantas[c->tamanho - 1]->n_sementes = p->n_sementes;
-    c->plantas[c->tamanho - 1]->n_alcunhas = p->n_alcunhas;
-
-    printf("%s\n", c->plantas[c->tamanho - 1]->ID);
-    c->plantas[c->tamanho - 1]->alcunhas = (char **)malloc(sizeof(char *));
-    for (int i = 0; i < p->n_alcunhas && p->n_alcunhas > 0; i++)
-    {
-        if (i > 0)
-        {
-            c->plantas[c->tamanho - 1]->alcunhas = (char **)realloc(c->plantas[i]->alcunhas, sizeof(char *) * (i + 1));
-        }
-        else
-            c->plantas[c->tamanho - 1]->alcunhas = (char **)malloc(sizeof(char *));
-        c->plantas[c->tamanho - 1]->alcunhas[i] = (char *)malloc(sizeof(char) * strlen(p->alcunhas[i] + 1));
-        strcpy(c->plantas[c->tamanho - 1]->alcunhas[i], p->alcunhas[i]);
-    }
+    c->plantas[c->tamanho-1]=p;
 
     colecao_reordena(c, c->tipo_ordem);
     return 0;
