@@ -364,7 +364,7 @@ int main()
         printf("OK: verifica_planta_insere passou\n\n");
     }
 
-    /* error = verifica_colecao_tamanho(c);
+     error = verifica_colecao_tamanho(c);
     if (error)
     {
         printf("ERRO: %d erros encontrados em verifica_colecao_tamanho\n\n", error);
@@ -375,7 +375,7 @@ int main()
         printf("OK: verifica_colecao_tamanho passou\n\n");
     }
 
-    error = verifica_colecao_importa(&c1, ficheiro);
+    /* error = verifica_colecao_importa(&c1, ficheiro);
     if (error)
     {
         printf("ERRO: %d erros encontrados em verifica_colecao_importa\n\n", error);
@@ -384,7 +384,7 @@ int main()
     else
     {
         printf("OK: verifica_colecao_importa passou\n\n");
-    }
+    } */
 
     error = verifica_planta_remove(c1);
     if (error)
@@ -408,7 +408,7 @@ int main()
         printf("OK: verifica_planta_apaga passou\n\n");
     }
 
-    error = verifica_colecao_pesquisa_nome(c1);
+    /* error = verifica_colecao_pesquisa_nome(c1);
     if (error)
     {
         printf("ERRO: %d erros encontrados em verifica_colecao_pesquisa_nome\n\n", error);
@@ -417,7 +417,7 @@ int main()
     else
     {
         printf("OK: verifica_colecao_pesquisa_nome passou\n\n");
-    }
+    } */
 
     error = verifica_colecao_reordena(&c1);
     if (error)
@@ -431,7 +431,7 @@ int main()
     }
 
     colecao_apaga(c);
-    colecao_apaga(c1); */
+    colecao_apaga(c1);
 
     if (errorCount == 0)
         printf("FIM DOS TESTES: Todos os testes passaram\n");

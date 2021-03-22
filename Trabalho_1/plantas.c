@@ -68,7 +68,7 @@ int insere_alcunhas(planta *p1, planta *p2)
 }
 int planta_insere(colecao *c, planta *p)
 {
-    if (c == NULL || p == NULL)
+    if (c == NULL || p == NULL || p->n_alcunhas<0 || p->n_sementes<0)
     {
         return -1;
     }
@@ -78,9 +78,7 @@ int planta_insere(colecao *c, planta *p)
         {
             //se passarem valores de alcunhas ou sementes negativos colecao_atualiza da erro
             if (colecao_atualiza(c, p, i) == -1)
-            {
                 return -1;
-            }
             else
                 return 1;
         }
@@ -106,14 +104,30 @@ colecao *colecao_importa(const char *nome_ficheiro, const char *tipo_ordem)
 }
 planta *planta_remove(colecao *c, const char *nomep)
 {
+    int i;
     planta *removida;
-    if (c == NULL)
+    if (c == NULL || nomep ==NULL)
         return NULL;
-    // fazer a funcao que pesquisa para ver onde esta esse nomep;
-    ////->->->pergunta? o que fazer se houver mais do que uma planta com esse nome???
-    //diferente de coleçao_pesquisa_nome;
-    //copiar essa planta para removida;
-    //zerar os valores da planta da colecao;
+    // procurar , apontar com a removida para a que tem o nomep
+    // puxar todos os elelmentos da frente uma posicao para tras
+    //retornar removida
+    for (i = 0; i < c->tamanho; i++)
+    {
+        if(!strcmp(c->plantas[i]->nome_cientifico, nomep)){
+            removida=c->plantas[i];
+            break;
+        }
+        else
+            return NULL;
+    }
+    for (int j = i + 1; j < c->tamanho; j++)
+	{
+		c->plantas[j - 1] = c->plantas[j];
+	}
+    c->tamanho--;
+    c->plantas = (planta **)realloc(c->plantas, sizeof(planta *) * (c->tamanho));
+	//esta a dar erro porque nao esta a remover
+    //acho que nao remove porque o nomep nao esta em c
     return removida;
 }
 
@@ -131,6 +145,7 @@ int planta_apaga(planta *p)
 
     free(p->alcunhas);
     free(p);
+    p=NULL;
     return 0;
 }
 int colecao_apaga(colecao *c)
@@ -151,7 +166,19 @@ int colecao_apaga(colecao *c)
 }
 int *colecao_pesquisa_nome(colecao *c, const char *nomep, int *tam)
 {
-    return NULL;
+    planta **plantas;
+    tam=0;
+    if(c==NULL || nomep==NULL || tam<0)
+        return NULL;
+    for (int i = 0; i < c->tamanho; i++)
+	{
+		if (!strcmp(c->plantas[i]->nome_cientifico, nomep)){
+            tam++;
+			
+        }
+	}       // esta so um esboco para o que poder fazer
+            // temos que ver os nomes_cientificos e as alcunhas
+    return tam;
 }
 int colecao_reordena(colecao *c, const char *tipo_ordem)
 {
@@ -203,9 +230,9 @@ int colecao_reordena(colecao *c, const char *tipo_ordem)
 //atualiza o número de sementes, alcunhas e alcunhas repetidas
 int colecao_atualiza(colecao *c, planta *p, int i)
 {
-    //c->plantas[i]->n_alcunhas += p->n_alcunhas;
+    
     int t = 0;
-    if (p->n_sementes < 0 || p->n_alcunhas < 0)
+    if (p->n_sementes < 0 || p->n_alcunhas < 0 || c==NULL || p==NULL || i<0)
     {
         return -1;
     }
