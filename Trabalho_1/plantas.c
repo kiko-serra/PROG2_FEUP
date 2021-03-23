@@ -14,16 +14,13 @@ planta *planta_nova(const char *ID, const char *nome_cientifico, char **alcunhas
     if (plt == NULL)
         return NULL;
 
-    if (sizeof(ID) > 10 || ID == NULL)
+    if (sizeof(ID) > 10 || ID == NULL || sizeof(nome_cientifico) > N_MAX || nome_cientifico == NULL || n_sementes < 0)
         return NULL;
-    if (sizeof(nome_cientifico) > 200 || nome_cientifico == NULL)
-        return NULL;
-    if (n_sementes < 0)
-        return NULL;
+	
     strcpy(plt->ID, ID);
     strcpy(plt->nome_cientifico, nome_cientifico);
     plt->n_sementes = n_sementes;
-
+	// ver se podemos testar antes se n_alcunhas>0 e nao fazer o if(n_alcinhas>0)
     if (n_alcunhas > 0)
     {
         plt->n_alcunhas = n_alcunhas;
