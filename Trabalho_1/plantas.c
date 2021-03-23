@@ -115,6 +115,7 @@ planta *planta_remove(colecao *c, const char *nomep)
     {
         if(!strcmp(c->plantas[i]->nome_cientifico, nomep)){
             removida=c->plantas[i];
+		//tentar fazer copiando os parametros um a um de c->plantas[i] para removida
             break;
         }
         else
