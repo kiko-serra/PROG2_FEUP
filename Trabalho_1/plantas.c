@@ -63,7 +63,7 @@ colecao *colecao_nova(const char *tipo_ordem)
 }
 int planta_insere(colecao *c, planta *p)
 {
-    if (c == NULL || p == NULL || p->n_alcunhas < 0 || p->n_sementes < 0)
+     if (c == NULL || p == NULL /*|| p->n_alcunhas < 0 || p->n_sementes < 0*/)
     {
         return -1;
     }
@@ -72,8 +72,10 @@ int planta_insere(colecao *c, planta *p)
         if (!strcmp(c->plantas[i]->ID, p->ID))
         {
             //se passarem valores de alcunhas ou sementes negativos colecao_atualiza da erro
-            colecao_atualiza(c, p, i);
-            return 1;
+            if(colecao_atualiza(c, p, i)==-1){return -1;}
+            else return 1;
+            //colecao_reordena(c, c->tipo_ordem);
+            //return 1;
         }
     }
     c->plantas = (planta **)realloc(c->plantas, sizeof(planta *) * (c->tamanho + 1));
@@ -100,7 +102,7 @@ colecao *colecao_importa(const char *nome_ficheiro, const char *tipo_ordem)
     FILE *f = fopen(nome_ficheiro, "r");
     colecao *c = colecao_nova(tipo_ordem);
     //criar colecao nova
-    char linha[10000], id[10], nome_cientifico[N_MAX];
+    char linha[10000]={}, id[10], nome_cientifico[N_MAX];
     char **alcunhas;
     int n_alcunhas = 0, n_sementes = 0;
     char *token;
@@ -111,28 +113,35 @@ colecao *colecao_importa(const char *nome_ficheiro, const char *tipo_ordem)
         linha[strlen(linha) - 1] = '\0';
         token = strtok(linha, ",");
         strcpy(id, token);
-        if (strlen(id) > 10 || strlen(id) < 0)
-        {
+        
+        /* if (strlen(id) > 10 || strlen(id) < 0)
+        {printf("merda\n");
+            colecao_apaga(c);
             return NULL;
-        }
+        } */
+        
         token = strtok(NULL, ",");
+        
         strcpy(nome_cientifico, token);
-        if (strlen(nome_cientifico) > N_MAX || strlen(nome_cientifico) < 0)
+        /* if (strlen(nome_cientifico) > N_MAX || strlen(nome_cientifico) < 0)
         {
+            //colecao_apaga(c);
             return NULL;
-        }
+        } */
 
         token = strtok(NULL, ",");
         n_sementes = atoi(token);
-        if (n_sementes < 0)
+        /* if (n_sementes < 0)
         {
-            colecao_apaga(c);
+            //colecao_apaga(c);
             //free tudo-> colecao apaga
             return NULL;
-        }
-        token = strtok(NULL, ",");
+        } */
+        token = strtok(NULL, ",");printf("merda\n");
+        printf("%s", token);
         if (token==NULL)
         {
+            
             n_alcunhas = 0;
             alcunhas = NULL;
         }
@@ -296,9 +305,9 @@ int colecao_reordena(colecao *c, const char *tipo_ordem)
     strcpy(c->tipo_ordem, tipo_ordem);
     if (!strcmp(c->tipo_ordem, "nome"))
     {
-        for (i = 0; i < (c->tamanho-1); i++)
+        for (i = 0; i < (c->tamanho); i++)
         {
-            for (j = i + 1; j < (c->tamanho-1); j++)
+            for (j = i + 1; j < (c->tamanho); j++)
             {
                 if (strcmp(c->plantas[i]->nome_cientifico, c->plantas[j]->nome_cientifico) > 0)
                 {
@@ -311,9 +320,9 @@ int colecao_reordena(colecao *c, const char *tipo_ordem)
     }
     else if (!strcmp(c->tipo_ordem, "id"))
     {
-        for (i = 0; i < (c->tamanho-1); i++)
+        for (i = 0; i < (c->tamanho); i++)
         {
-            for (j = i + 1; j < (c->tamanho-1); j++)
+            for (j = i + 1; j < (c->tamanho); j++)
             {
                 if (strcmp(c->plantas[i]->ID, c->plantas[j]->ID) > 0)
                 {

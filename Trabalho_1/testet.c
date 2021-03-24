@@ -3,12 +3,12 @@
 #include <string.h>
 int main()
 {
-    char uc[15], letivo[10];
+    char uc[15], letivo[100];
     int ano;
-    char linha[100] = "Programação 2-1-2020/2021";
+    char linha[100] = "Programação 2-1-2020/20  21";
 
     char *token;
-    token = strtok(linha, "-");
+    token=strtok(linha, "-");
     strcpy(uc, token);
     token = strtok(NULL, "-");
     ano = atoi(token);

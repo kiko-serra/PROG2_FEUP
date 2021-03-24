@@ -375,7 +375,7 @@ int main()
         printf("OK: verifica_colecao_tamanho passou\n\n");
     }
 
-    /* error = verifica_colecao_importa(&c1, ficheiro);
+    error = verifica_colecao_importa(&c1, ficheiro);
     if (error)
     {
         printf("ERRO: %d erros encontrados em verifica_colecao_importa\n\n", error);
@@ -384,7 +384,7 @@ int main()
     else
     {
         printf("OK: verifica_colecao_importa passou\n\n");
-    } */
+    }
 
     error = verifica_planta_remove(c1);
     if (error)
