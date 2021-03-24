@@ -408,7 +408,7 @@ int main()
         printf("OK: verifica_planta_apaga passou\n\n");
     }
 
-    /* error = verifica_colecao_pesquisa_nome(c1);
+    error = verifica_colecao_pesquisa_nome(c1);
     if (error)
     {
         printf("ERRO: %d erros encontrados em verifica_colecao_pesquisa_nome\n\n", error);
@@ -417,7 +417,7 @@ int main()
     else
     {
         printf("OK: verifica_colecao_pesquisa_nome passou\n\n");
-    } */
+    } 
 
     error = verifica_colecao_reordena(&c1);
     if (error)
