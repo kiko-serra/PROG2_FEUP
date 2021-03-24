@@ -2,6 +2,15 @@
 /*          Biblioteca plantas | PROG2 | MIEEC | 2020/21         */
 /*****************************************************************/
 
+//DUVIDAS//
+
+//algo com os tokens esta errado pois da segmentation fault
+//nao reordena bem
+//nao insere no sitio certo
+
+
+
+
 #include "plantas.h"
 #include <string.h>
 #include <stdlib.h>
