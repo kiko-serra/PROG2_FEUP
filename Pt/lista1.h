@@ -133,5 +133,8 @@ lista *lista_concatena(lista *lst1, lista *lst2);
 
 
 lista *lista_importa(lista *lst, char *nome);
+
+
+int lista_insere_ordenada(lista *lst, char *inserir);
 #define LISTA_H
 #endif

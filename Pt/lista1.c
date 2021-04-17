@@ -334,19 +334,18 @@ lista *lst_pesq_sub_remo(lista *lst, char *string)
 lista *lista_concatena(lista *lst1, lista *lst2)
 {
 
-	l_elemento *elemento=lst2->inicio;
-	
-	if (lst1 == NULL || lst2==NULL)
+	l_elemento *elemento = lst2->inicio;
+
+	if (lst1 == NULL || lst2 == NULL)
 	{
 		return NULL;
 	}
 
-	while (elemento!=NULL)
+	while (elemento != NULL)
 	{
 		lista_insere(lst1, elemento->str, NULL);
-		elemento=elemento->proximo;
+		elemento = elemento->proximo;
 	}
-	
 
 	return lst1;
 }
@@ -372,4 +371,33 @@ lista *lista_importa(lista *lst, char *nome)
 	}
 	fclose(f);
 	return lst;
+}
+int lista_insere_ordenada(lista *lst, char *inserir)
+{
+	if (lst == NULL || inserir == NULL)
+	{
+		return -1;
+	}
+	l_elemento *aponta;
+	for (int i = 0; i < lst->tamanho; i++)
+	{
+		aponta=lista_elemento(lst, i);
+		if (strcmp(aponta->str, inserir) == 0)// a string ja existe
+		{
+			return -1;
+		}
+
+		else if (strcmp(aponta->str, inserir) > 0)
+		{
+			
+			lista_insere(lst, inserir, aponta);
+			return i;
+		}
+		
+	}
+	if (!lista_insere(lst, inserir, NULL))
+	{
+		return -1;}
+	return lst->tamanho;
+	
 }

@@ -39,11 +39,12 @@ int main()
 
     lista_imprime(l);
     printf("\n");
-
+    //fim 1d inicio 1e
     lista_ordena(l);
     printf("\nLista ordenada: \n");
-
     lista_imprime(l);
+    //fim 1e inicio 1f
+
     int i=0;
     l_elemento *jogo_pesquisa = lista_pesquisa(l, "Duke Nukem (PS3)", LISTA_INICIO);
     if (!jogo_pesquisa)
@@ -55,18 +56,20 @@ int main()
     {
         if (lista_elemento(l, i)== jogo_pesquisa)
         {
-            printf("\nO jogo Duke Nukem (PS3) encontra-se na posição %d.\n", i);
+            printf("\nO jogo %s encontra-se na posição %d.\n",jogo_pesquisa->str, i);
             break;
         }
         i++;
         
     }
-
-
-
+    //fim 1f inicio 1g
+    printf("O jogo Minesweeper (PC) foi inserido na posição %d\n\n", lista_insere_ordenada(l, "Minesweeper (PC) "));
+    //lista_imprime(l);
 
     lista_apaga(l);
     lista_apaga(substring);
     lista_apaga(lst2);
+
+
     return 0;
 }
