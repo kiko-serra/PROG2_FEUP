@@ -4,40 +4,69 @@
 #include <stdio.h>
 #include "lista1.h"
 
+int main()
+{
 
-int main(){
-    
     lista *l = lista_nova();
-    if (l==NULL)
+    if (l == NULL)
     {
         printf("Lista não criada!\n");
         return 0;
     }
-   
-    char nome_ficheiro[]={"arquivo.txt"};
-    char str[]={};
-    FILE *f=fopen("arquivo.txt", "r");
-     
-    while (1){
-        printf("merda\n");
-        if (!fgets(str, 80, f))
-        {
-            break;
-        }
-        str[strlen(str)-1]='\0';
-        printf("merda2\n");
-        
-        if(!lista_insere(l, str, NULL)){
-            printf("Erro a inserir na lista!\n");
-            return -1;
-        }
-        
-    }
+
+    char nome_ficheiro[] = {"arquivo.txt"};
+
+    l = lista_importa(l, nome_ficheiro);
+
     printf("Foram carregados %d jogos\n", l->tamanho);
     lista_imprime(l);
     printf("\n");
 
+    //Fim ex1a inicio ex1b
+    char jogo[20] = {"PS2"};
+    lista *substring = lista_pesquisa_substring(l, jogo);
+    //fim 1b inicio 1c
+    lst_pesq_sub_remo(l, jogo);
+    printf("Após a remoção de jogos %s a lista tem %d jogos. \n\n", jogo, l->tamanho);
+    lista_imprime(l);
+    printf("\n");
+    //fim 1c inicio 1d
 
-    fclose(f);
+    lista *lst2 = lista_nova();
+    lst2 = lista_importa(lst2, "oldies.txt");
+    printf("\nForam carregados %d jogos antigos:\n", lst2->tamanho);
+    lista_concatena(l, lst2);
+
+    lista_imprime(l);
+    printf("\n");
+
+    lista_ordena(l);
+    printf("\nLista ordenada: \n");
+
+    lista_imprime(l);
+    int i=0;
+    l_elemento *jogo_pesquisa = lista_pesquisa(l, "Duke Nukem (PS3)", LISTA_INICIO);
+    if (!jogo_pesquisa)
+    {
+        printf("\nElemento não encontrado.\n");
+        return -1;
+    }
+    while (1)
+    {
+        if (lista_elemento(l, i)== jogo_pesquisa)
+        {
+            printf("\nO jogo Duke Nukem (PS3) encontra-se na posição %d.\n", i);
+            break;
+        }
+        i++;
+        
+    }
+
+
+
+
+    lista_apaga(l);
+    lista_apaga(substring);
+    lista_apaga(lst2);
     return 0;
 }

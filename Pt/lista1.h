@@ -121,5 +121,17 @@ int lista_ordena(lista *lst);
 //imprime todo o conteudo da lista
 int lista_imprime(lista *lst);
 
+//pesquisa uma substring dentro das strings da lista
+lista *lista_pesquisa_substring(lista *lst, char *string);
+
+//pesquisa por um elemento, remove-o da lista, cria u,a nova lista so com os elementos removidos, imprime essa lista num ficheiro "jogos_ps2.txt"
+lista *lst_pesq_sub_remo(lista *lst, char *string);
+
+//concatena 2 listas uma no fim da outra, retorna a primeira 
+lista *lista_concatena(lista *lst1, lista *lst2);
+
+
+
+lista *lista_importa(lista *lst, char *nome);
 #define LISTA_H
 #endif
