@@ -18,14 +18,15 @@ int main(){
     char str[]={};
     FILE *f=fopen("arquivo.txt", "r");
      
-    while (1)
-    {printf("merda\n");
+    while (1){
+        printf("merda\n");
         if (!fgets(str, 80, f))
         {
             break;
         }
         str[strlen(str)-1]='\0';
         printf("merda2\n");
+        
         if(!lista_insere(l, str, NULL)){
             printf("Erro a inserir na lista!\n");
             return -1;
@@ -34,7 +35,7 @@ int main(){
     }
     printf("Foram carregados %d jogos\n", l->tamanho);
     lista_imprime(l);
-
+    printf("\n");
 
 
     fclose(f);
