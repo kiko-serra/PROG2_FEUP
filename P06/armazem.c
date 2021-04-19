@@ -42,16 +42,17 @@ int armazem_cheio(armazem *armz)
 	}
 	//ver se o comprimento do armazem é igual ao tamanho da fila
 	// e ver se o tamanho da ultima pilha é igual a altura do armazem
-	if ((armz->comprimento == armz->contentores->tamanho) && (armz->altura == fila_back(armz->contentores)->tamanho))
+	if (armz->comprimento == armz->contentores->tamanho)
 	{
-		return 1;
+		if (armz->altura == fila_back(armz->contentores)->tamanho)
+		{
+			return 1;
+		}
 	}
 
 	/* devolve nao cheio */
-	if ((armz->comprimento > armz->contentores->tamanho) || (armz->altura > fila_back(armz->contentores)->tamanho))
-	{
-		return 0;
-	}
+
+	return 0;
 }
 
 /* alinea e) */
@@ -66,15 +67,13 @@ int armazenar_contentor(armazem *armz, contentor *contr)
 	{
 		return 0;
 	}
-	if (fila_back(armz->contentores)->raiz->elemento->tamanho == armz->altura)
+	if (fila_back(armz->contentores)->tamanho == armz->altura)
 	{
 		pilha *pilhan = pilha_nova();
 		fila_push(armz->contentores, pilhan);
-
-		pilha_push(fila_back(armz->contentores), contr);
-
-		return 1;
 	}
+	pilha_push(fila_back(armz->contentores), contr);
+	return 1;
 }
 
 /* alinea f) */
@@ -84,10 +83,12 @@ contentor *expedir_contentor(armazem *armz)
 	{
 		return NULL;
 	}
-	if (pilha_top(fila_front(armz->contentores))==pilha_down(fila_front(armz->contentores)))
+	contentor *aux = contentor_novo(pilha_top(fila_front(armz->contentores))->destino, pilha_top(fila_front(armz->contentores))->valor);
+	if (fila_front(armz->contentores)->tamanho == 1)
 	{
-		/* code */
+		fila_pop(armz->contentores);
+		return aux;
 	}
-	
-	return pilha_top(fila_front(armz->contentores));
+	pilha_pop(fila_front(armz->contentores));
+	return aux;
 }
