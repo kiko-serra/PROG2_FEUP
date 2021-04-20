@@ -40,6 +40,8 @@ int avalia_expressoes(FILE *ficheiro, vetor *expressoes)
     int i = 0;
     for (int i = 0; i < vetor_tamanho(expressoes); i++)
     {
+        //nao esta a inserir nada na pilha provavelmente porque
+        //nao esta a ler bem
         char *token = strtok(expressoes->elementos[i].str, "(");
 
         while (token != NULL)
