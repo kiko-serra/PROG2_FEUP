@@ -26,7 +26,7 @@ armazem *armazem_novo(int comprimento, int altura)
 /* alinea c) */
 int armazem_vazio(armazem *armz)
 {
-	if (armz == NULL || armz->contentores->tamanho == 0)
+	if (armz == NULL || fila_tamanho(armz->contentores) == 0)
 	{
 		return 1;
 	}
@@ -59,27 +59,28 @@ int armazem_cheio(armazem *armz)
 int armazenar_contentor(armazem *armz, contentor *contr)
 {
 	/* devolve nao ha' espaco */
-	if (armz == NULL || contr == NULL)
+	if (armz == NULL || contr == NULL||armazem_cheio(armz))
 	{
 		return 0;
 	}
-	if (armazem_cheio(armz))
-	{
-		return 0;
-	}
-	if (fila_back(armz->contentores)->tamanho == armz->altura)
-	{
-		pilha *pilhan = pilha_nova();
-		fila_push(armz->contentores, pilhan);
-	}
-	pilha_push(fila_back(armz->contentores), contr);
+	pilha *back = fila_back(armz->contentores);  // última pilha da fila
+    if(back && (back->tamanho < armz->altura))  // se pilha criada e com espaço livre
+        pilha_push(back, contr);  // adiciona novo contentor
+    else  // se pilha não criada ou cheia
+    {
+        back = pilha_nova();  // cria a pilha
+        if(!back)
+            return 0;
+        fila_push(armz->contentores, back);  // adiciona-a à fila
+        pilha_push(back, contr);  // adiciona novo contentor à nova pilha
+    }
 	return 1;
 }
 
 /* alinea f) */
 contentor *expedir_contentor(armazem *armz)
 {
-	if (!armazem_vazio(armz) || armz == NULL)
+	if (armazem_vazio(armz) || armz == NULL)
 	{
 		return NULL;
 	}
