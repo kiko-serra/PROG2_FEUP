@@ -63,8 +63,6 @@ float calcula_total(char* expressao_rpn){
 }
 
 
-
-
 int main(){
     printf("Expressão: ");
     char string[128];
