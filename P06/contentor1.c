@@ -12,20 +12,21 @@
  */
 contentor *contentor_novo(char *dest, float val)
 {
-	if (dest == NULL || val < 0)
-	{
-		return NULL;
-	}
+    if (dest == NULL || val < 0)
+    {
+        return NULL;
+    }
+    contentor *cont = (contentor *)malloc(sizeof(contentor));
+    if (cont == NULL)
+    {
 
-	contentor *cont = (contentor *)malloc(sizeof(contentor));
-	if (cont == NULL)
-		return NULL;
-
-	cont->destino = (char *)malloc((strlen(dest) + 1) * sizeof(char));
-	strcpy(cont->destino, dest);
-
-	cont->valor = val;
-	return cont;
+        return NULL;
+    }
+    
+    cont->destino = (char *)malloc((strlen(dest) + 1) * sizeof(char));
+    strcpy(cont->destino, dest);
+    cont->valor = val;
+    return cont;
 }
 
 /**
@@ -35,12 +36,13 @@ contentor *contentor_novo(char *dest, float val)
  */
 void contentor_apaga(contentor *contr)
 {
-	if (contr == NULL)
-	{
-		return;
-	}
-	free(contr->destino);
-	free(contr);
+    if (contr == NULL)
+    {
+
+        return;
+    }
+    free(contr->destino);
+    free(contr);
 }
 
 /**
@@ -49,8 +51,8 @@ void contentor_apaga(contentor *contr)
  */
 void contentor_imprime(contentor *contr)
 {
-	if (contr == NULL)
-		printf("Contentor nulo\n");
-	else
-		printf("Destino: %s, valor da carga: %.2f K Euros\n", contr->destino, contr->valor);
+    if (contr == NULL)
+        printf("Contentor nulo\n");
+    else
+        printf("Destino: %s, valor da carga: %.2f K Euros\n", contr->destino, contr->valor);
 }
