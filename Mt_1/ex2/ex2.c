@@ -17,18 +17,8 @@ void imprime_vetor(vetor *vec)
 /*** problema 2 ***/
 int avalia_expressoes(FILE *ficheiro, vetor *expressoes)
 {
-    pilha *p = pilha_nova();
-    vetor *vec=vetor_novo();
-    vetor *vec2=vetor_novo();
-    for (int i = 0; i < expressoes->tamanho; i++)
-    {
-        vetor_insere(vec, expressoes->elementos[i].str, -1);
-    }
-    for (int i = 0; i < expressoes->tamanho; i++)
-    {
-        vetor_insere(vec2, expressoes->elementos[i].str, -1);
-    }
-    
+    pilha *p;
+
     //imprime_vetor(expressoes);
     if (ficheiro == NULL || expressoes == NULL)
     {
@@ -36,60 +26,42 @@ int avalia_expressoes(FILE *ficheiro, vetor *expressoes)
     }
     FILE *f = ficheiro;
 
-    int flag = 0;
     int i = 0;
     for (int i = 0; i < vetor_tamanho(expressoes); i++)
     {
-        //nao esta a inserir nada na pilha provavelmente porque
-        //nao esta a ler bem
-        char *token = strtok(expressoes->elementos[i].str, "(");
+        int flag = 0;
+        p = pilha_nova();
 
-        while (token != NULL)
+        int n = strlen(expressoes->elementos[i].str);
+        for (int j = 0; j < n; j++)
         {
-            if (!strcmp(token, "("))
+            if (expressoes->elementos[i].str[j] == '(')
             {
-                pilha_push(p, token);
+                pilha_push(p, "(");
             }
-
-            token = strtok(NULL, "(");
-        }
-        printf("%d\n", pilha_tamanho(p));
-        char *token2 = strtok(vec->elementos[i].str, ")");
-
-        while (token2 != NULL)
-        {
-            if (!strcmp(token2, ")"))
+            else if (expressoes->elementos[i].str[j] == ')')
             {
-                if (pilha_tamanho(p) > 0)
+                if (pilha_vazia(p) == 1)
                 {
-                    pilha_pop(p);
-                }
-                else
-                    //escrever na equacao que NOK
                     flag = 1;
+                }
+                pilha_pop(p);
             }
+        }
 
-            token2 = strtok(NULL, ")");
-        }
-        if (pilha_tamanho(p)>0)
+        if (pilha_tamanho(p) > 0)
         {
-            flag=1;
+            flag = 1;
         }
-        else if (!pilha_tamanho(p))
-        {
-            flag=0;
-        }
-        else
-            return 0;
-        
         if (flag == 0)
         {
-            fprintf(f, " %s -> OK\n", vec2->elementos[i].str, stdout);
+            fprintf(f, " %s -> OK\n", expressoes->elementos[i].str, stdout);
         }
         if (flag == 1)
         {
-            fprintf(f, "%s -> NOK\n", vec2->elementos[i].str, stdout);
+            fprintf(f, "%s -> NOK\n", expressoes->elementos[i].str, stdout);
         }
+        pilha_apaga(p);
     }
 
     return 1;
