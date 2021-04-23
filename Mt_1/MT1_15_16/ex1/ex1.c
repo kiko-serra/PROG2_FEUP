@@ -8,24 +8,77 @@
 /*              Funcoes a implementar               */
 /****************************************************/
 
-void retira_duplicados(vetor *vec) {
-    
+void retira_duplicados(vetor *vec)
+{
+    if (vec == NULL)
+    {
+        return;
+    }
+    for (int i = 0; i < vec->tamanho - 1; i++)
+    {
+        for (int j = i + 1; j < vec->tamanho; j++)
+        {
+            if (!strcmp(vetor_elemento(vec, i), vetor_elemento(vec, j)))
+            {
+                vetor_remove(vec, j);
+                j--;
+            }
+        }
+    }
+    return;
 }
 
-vetor *interseta(lista *l1, lista *l2) {
-    
+vetor *interseta(lista *l1, lista *l2)
+{
+    int i = 0;
+    vetor *vec = vetor_novo();
+    if (l1 == NULL || l2 == NULL || vec == NULL)
+    {
+        return NULL;
+    }
+    elemento *aponta = l1->inicio;
+    elemento *aponta2 = l2->inicio;
+    while (aponta != NULL)
+    {
+        if (lista_pesquisa(l2, aponta->str, INICIO) != NULL)
+        {
+            if (vetor_insere(vec, aponta->str, i) == -1)
+            {
+                vetor_apaga(vec);
+                return NULL;
+            }
+            i++;
+        }
+        aponta = aponta->proximo;
+    }
+
+    return vec;
 }
 
-vetor *anteriores(lista *lst, const int ano) {
-    
-}
+vetor *anteriores(lista *lst, const int ano)
+{
+    vetor *vec = vetor_novo();
+    if (lst == NULL || vec == NULL || ano <= 0)
+    {
+        return NULL;
+    }
+    elemento *aponta = lst->inicio;
+    while (aponta != NULL)
+    {
+        if (atoi((aponta->str + strlen(aponta->str) - 5)) < ano)
+            vetor_insere(vec, aponta->str, vec->tamanho);
+        aponta=aponta->proximo;
+    }
 
+    return vec;
+}
 
 /****************************************************/
 /*     Funcoes ja implementadas (nao modificar)     */
 /****************************************************/
 
-vetor *lerAtores(FILE *ficheiro) {
+vetor *lerAtores(FILE *ficheiro)
+{
     char buffer[256], *nlptr;
     vetor *atores;
 
@@ -34,7 +87,8 @@ vetor *lerAtores(FILE *ficheiro) {
 
     atores = vetor_novo();
 
-    while (!feof(ficheiro)) {
+    while (!feof(ficheiro))
+    {
         fgets(buffer, 255, ficheiro);
         nlptr = strchr(buffer, '\n');
         if (nlptr)
@@ -46,7 +100,8 @@ vetor *lerAtores(FILE *ficheiro) {
     return atores;
 }
 
-lista *lerFilmes(FILE *ficheiro) {
+lista *lerFilmes(FILE *ficheiro)
+{
     char buffer[256], *nlptr;
     lista *filmes;
 
@@ -55,7 +110,8 @@ lista *lerFilmes(FILE *ficheiro) {
 
     filmes = lista_nova();
 
-    while (!feof(ficheiro)) {
+    while (!feof(ficheiro))
+    {
         fgets(buffer, 255, ficheiro);
         nlptr = strchr(buffer, '\n');
         if (nlptr)
@@ -67,7 +123,8 @@ lista *lerFilmes(FILE *ficheiro) {
     return filmes;
 }
 
-int main() {
+int main()
+{
     FILE *fa, *ff, *ff2;
     vetor *atores, *resultado, *resultado1;
     lista *filmes, *filmes2;

@@ -2,26 +2,56 @@
 #include <string.h>
 #include <stdio.h>
 
-typedef struct {
+typedef struct
+{
     char palavra[100];
     int ocorrencias;
-}
-        registo;
+} registo;
 
 /****************************************************/
 /*              Funcoes a implementar               */
 /****************************************************/
 
 /*** exercicio 2.1 ***/
-registo *analisarFicheiro(FILE *ficheiro, int *num_palavras) {
-    
+registo *analisarFicheiro(FILE *ficheiro, int *num_palavras)
+{
+    if (ficheiro == NULL || num_palavras <= 0)
+    {
+        return NULL;
+    }
+    registo *v = (registo *)malloc(sizeof(registo));
+    int i, n = 0;
+    char str[50];
+    while (fscanf(ficheiro, "%s", str) != EOF)
+    {
+        for (i = 0; i <= n; i++)
+        {
+            if (!strcmp(str, v[i].palavra))
+            {
+                v[i].ocorrencias++;
+                break;
+            }
+            if (i == n)
+            { /* palavra nao existe*/
+                v = realloc(v, sizeof(registo) * (n + 1));
+                strcpy(v[n].palavra, str);
+                v[n].ocorrencias = 1;
+                n++;
+                break;
+            }
+        }
+    }
+    *num_palavras = n;
+    return v;
 }
 
 /*** exercicio 2.2 ***/
-void gerarRelatorio(FILE *ficheiro, registo *resultados, int num_palavras) {
+void gerarRelatorio(FILE *ficheiro, registo *resultados, int num_palavras)
+{
     int i;
     fprintf(ficheiro, "Palavras encontradas:\n------------------------------\n");
-    for (i = 0; i < num_palavras; i++) {
+    for (i = 0; i < num_palavras; i++)
+    {
         fprintf(ficheiro, "%d: %s (%d)\n", i + 1, resultados[i].palavra, resultados[i].ocorrencias);
     }
 }
@@ -30,7 +60,8 @@ void gerarRelatorio(FILE *ficheiro, registo *resultados, int num_palavras) {
 /*     Funcoes ja implementadas (nao modificar)     */
 /****************************************************/
 
-int main() {
+int main()
+{
     FILE *fin, *fout;
     char nomeIn[50], nomeOut[50];
     registo *resultados;
