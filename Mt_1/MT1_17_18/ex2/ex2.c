@@ -10,63 +10,65 @@
 /****************************************************/
 
 /*** problema 2 ***/
-vetor *contar_remetente_destinatario(vetor *vrem, vetor *vdest)
+// criar vetor e ir pondo nome de pessoas sem repetir
+// criar outro vetor para contar o numero de cartas que cada um tem
+// ambos num ciclo for para a posicao da primeira pessoa ser igual nos dois vetores
+vetor* contar_remetente_destinatario(vetor *vrem, vetor *vdest)
 {
-
-    if(vrem == NULL || vdest == NULL)
-        return NULL;
-
-    vetor *pessoas = vetor_novo();
-    if(pessoas == NULL)
-        return NULL;
-
-    int n_pessoas_max = vrem->tamanho + vdest->tamanho;  // máximo número possível de pessoas distintas
-    int n_cartas[n_pessoas_max];  // contador do número de cartas de cada pessoa
-
-    // percorre vrem contando as cartas de cada pessoa
-    for(int i = 0; i < vrem->tamanho; i++)
+    if (vrem ==NULL || vdest==NULL)
     {
-        const char *rem = vetor_elemento(vrem, i);
-        int pos = vetor_pesquisa(pessoas, rem);
-        if(pos == -1)  // se a pessoa ainda não existe no vetor pessoas, insere-a (no fim do vetor) e conta a sua primeira carta
+        return NULL;
+    }
+    vetor *pessoas= vetor_novo();
+    int n_pes_max=vrem->tamanho+vdest->tamanho;
+    int cartas[n_pes_max];
+    if (pessoas==NULL)
+    {
+        vetor_apaga(pessoas);
+        return NULL;
+    }
+    char nome[120];
+    int i=0, pesq, pos=0;
+    for (i = 0; i < vrem->tamanho; i++)
+    {
+        strcpy(nome, vetor_elemento(vrem, i));
+        pesq = vetor_pesquisa(pessoas, nome);
+        if (pesq ==-1)
         {
-            if(vetor_insere(pessoas, rem, -1) == -1)
+            pos= vetor_insere(pessoas, nome, -1);
+            if(pos == -1)
             {
                 vetor_apaga(pessoas);
                 return NULL;
             }
-            n_cartas[pessoas->tamanho-1] = 1;
+            cartas[pessoas->tamanho-1]=1;
         }
-        else  // se já existe, incrementa o número de cartas na posição respetiva
-            n_cartas[pos]++;
+        else 
+            cartas[pesq]++;
     }
-
-    // percorre vdest contando as cartas de cada pessoa
-    for(int i = 0; i < vdest->tamanho; i++)
+    for (i = 0; i < vdest->tamanho; i++)
     {
-        const char *dest = vetor_elemento(vdest, i);
-        int pos = vetor_pesquisa(pessoas, dest);
-        if(pos == -1)  // se a pessoa ainda não existe no vetor pessoas, insere-a (no fim do vetor) e conta a sua primeira carta
+        strcpy(nome, vetor_elemento(vdest, i));
+        pesq = vetor_pesquisa(pessoas, nome);
+        if (pesq ==-1)
         {
-            if(vetor_insere(pessoas, dest, -1) == -1)
+            pos=vetor_insere(pessoas, nome, -1);
+            if(pos == -1)
             {
                 vetor_apaga(pessoas);
                 return NULL;
             }
-            n_cartas[pessoas->tamanho-1] = 1;
+            cartas[pessoas->tamanho-1]=1;
         }
-        else  // se já existe, incrementa o número de cartas na posição respetiva
-            n_cartas[pos]++;
+        else 
+            cartas[pesq]++;
     }
-
-    // imprime a informação pedida
-    for(int i = 0; i < pessoas->tamanho; i++)
+    for (int i = 0; i < pessoas->tamanho; i++)
     {
-        const char *nome = vetor_elemento(pessoas, i);
-        printf("%s : %d cartas\n", nome, n_cartas[i]);
+        printf("%s : %d cartas\n", vetor_elemento(pessoas, i), cartas[i]);
     }
-
-    return pessoas;
+    
+		return pessoas;
 }
 
 /****************************************************/
