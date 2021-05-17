@@ -35,7 +35,7 @@ int main(){
     fim = clock();
     tempo = (double)(fim - inicio) / CLOCKS_PER_SEC;
     printf("tempo em segundos de inserir por lista: %lf\n", tempo);
-
+    //1.2
     fseek(f, 0, SEEK_SET); // volta ao inicio do ficheiro
 
     int n;
