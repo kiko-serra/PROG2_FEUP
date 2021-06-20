@@ -8,7 +8,7 @@
 #include "grafo.h"
 #include "tabdispersao.h"
 
-/* podem criar mais struct que achem necessá rias */
+/* podem criar mais struct que achem necessárias*/
 typedef unsigned long hash_func(const char *, int);
 
 typedef unsigned long sond_func(int, int, int);
