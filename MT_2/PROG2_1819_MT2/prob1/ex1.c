@@ -11,19 +11,36 @@ char* get_freguesia(char* rua);
 //1.1
 // Adiciona a casa comercial de nome designacao e atividade comercial atividade na tabela comercio_zona.
 // Se a casa comercial a inserir possui atividade ainda nao presente na zona (nao existe em atividades_zona),
-// esta atividade ee inserida na tabela atividades_zona e a classe da casa comercial ee “top”.
-// Caso contrario, a classe ee “normal”.
+// esta atividade Ã© inserida na tabela atividades_zona e a classe da casa comercial Ã© ï¿½topï¿½.
+// Caso contrario, a classe Ã© ï¿½normalï¿½.
 // A funcao retorna 0 se a casa comercial ja existe ou 1 se nao.
 int adiciona_comercio(char* designacao, char* atividade, tabela_dispersao* comercio_zona,
 		                                              tabela_dispersao* atividades_zona)
 {
-	return 0;
+	char top[5]="top";
+	char normal[9]="normal";
+
+	if (!designacao || !atividade || !comercio_zona || !atividades_zona)
+	{
+		return 0;
+	}
+	if (tabela_existe(atividades_zona, atividade)==TABDISPERSAO_EXISTE)
+	{
+		if (tabela_insere(comercio_zona, designacao, normal)!=TABDISPERSAO_OK)
+		{
+			return 0;
+		}
+		
+	}
+	else{
+		tabela_insere(atividades_zona, atividade, )
+	}
 }
 
 
 //  ------------ a implementar ----------------
 // 1.2
-// rmove a rua com menor numero de casas comerciais na freguesia freg da heap ruas
+// remove a rua com menor numero de casas comerciais na freguesia freg da heap ruas
 // retorna essa string
 // retorna NULL em caso de erro
 char *remove_rua_menos_comercio(heap *ruas, char *freg)
