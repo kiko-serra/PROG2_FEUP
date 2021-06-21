@@ -67,7 +67,7 @@ vetor *heap_ordena(vetor *v)
 		return vec;
     }
 	*/
-
+	vetor_apaga(vec);
 	return vec_aux;
 }
 
