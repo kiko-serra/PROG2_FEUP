@@ -7,7 +7,7 @@
 /*** problema 1.1 ***/
 char *avl_maiorstring(no_avl *no)
 {
-	/* complexidade do algoritmo: O(n) */
+	/* complexidade do algoritmo: O(n*log(n)) */
 	if (!no)
 	{
 		return NULL;

@@ -4,8 +4,7 @@
 #include "heap.h"
 #include "tabdispersao.h"
 
-char* get_freguesia(char* rua);
-
+char *get_freguesia(char *rua);
 
 //  ------------ a implementar ----------------
 //1.1
@@ -14,29 +13,43 @@ char* get_freguesia(char* rua);
 // esta atividade é inserida na tabela atividades_zona e a classe da casa comercial é �top�.
 // Caso contrario, a classe é �normal�.
 // A funcao retorna 0 se a casa comercial ja existe ou 1 se nao.
-int adiciona_comercio(char* designacao, char* atividade, tabela_dispersao* comercio_zona,
-		                                              tabela_dispersao* atividades_zona)
+int adiciona_comercio(char *designacao, char *atividade, tabela_dispersao *comercio_zona,
+					  tabela_dispersao *atividades_zona)
 {
-	char top[5]="top";
-	char normal[9]="normal";
-
 	if (!designacao || !atividade || !comercio_zona || !atividades_zona)
+	{
+		return -1;
+	}
+	if (tabela_valor(comercio_zona, designacao) != NULL)
 	{
 		return 0;
 	}
-	if (tabela_existe(atividades_zona, atividade)==TABDISPERSAO_EXISTE)
-	{
-		if (tabela_insere(comercio_zona, designacao, normal)!=TABDISPERSAO_OK)
-		{
-			return 0;
-		}
-		
-	}
-	else{
-		tabela_insere(atividades_zona, atividade, )
-	}
-}
 
+	//se ja existir a atividade na zona
+	if (tabela_valor(atividades_zona, atividade) != NULL)
+	{
+		if (tabela_insere(comercio_zona, designacao, "normal") != TABDISPERSAO_OK)
+		{
+			printf("erro1\n");
+			return -1;
+		}
+	}
+	//se ainda nao existir a atividade na zona
+	else
+	{
+		if (tabela_insere(comercio_zona, designacao, "top") != TABDISPERSAO_OK)
+		{
+			printf("erro2\n");
+			return -1;
+		}
+		if (tabela_insere(atividades_zona, atividade, atividade) != TABDISPERSAO_OK)
+		{
+			printf("erro3\n");
+			return -1;
+		}
+	}
+	return 1;
+}
 
 //  ------------ a implementar ----------------
 // 1.2
@@ -45,10 +58,51 @@ int adiciona_comercio(char* designacao, char* atividade, tabela_dispersao* comer
 // retorna NULL em caso de erro
 char *remove_rua_menos_comercio(heap *ruas, char *freg)
 {
-	return NULL;
+	if (!ruas || !freg)
+	{
+		return NULL;
+	}
+	int tam = heap_num_elementos(ruas);
+	heap *h_aux = heap_nova(tam);
+	if (!h_aux)
+	{
+		return NULL;
+	}
+
+	int flag = 0;
+	char *res;
+	for (int i = 1; i < tam + 1; i++)
+	{
+		if (flag)
+		{
+			break;
+		}
+		
+		if (!strcmp(get_freguesia(ruas->elementos[1]->valor), freg))
+		{
+			flag = 1;
+		}
+		else
+		{
+			heap_insere(h_aux, ruas->elementos[1]->valor, ruas->elementos[1]->prioridade);
+		}
+		res = ruas->elementos[1]->valor;
+		heap_remove(ruas);
+	}
+	int tam2 = heap_num_elementos(h_aux);
+	for (int i = 1; i < tam2 + 1; i++)
+	{
+		heap_insere(ruas, h_aux->elementos[1]->valor, h_aux->elementos[1]->prioridade);
+		heap_remove(h_aux);
+	}
+	if (!flag)
+	{
+		return NULL;
+	}
+	heap_apaga(h_aux);
+	h_aux = NULL;
+	return res;
 }
-
-
 
 //  ------------ a completar ----------------
 //1.3
@@ -57,51 +111,53 @@ char *remove_rua_menos_comercio(heap *ruas, char *freg)
 
 */
 
-
 /********************************************************************/
 /********************************************************************/
 // retorna referencia para a substring nome_freguesia na string "nome_rua_nome_freguesia"
-char* get_freguesia(char* rua)
+char *get_freguesia(char *rua)
 {
 	char *b;
-	b=strchr(rua,'_')+1;
+	b = strchr(rua, '_') + 1;
 	return b;
 }
 
-void verifica_valor(tabela_dispersao* td, char* ch, char *v)
-{	
-	int n=0;
+void verifica_valor(tabela_dispersao *td, char *ch, char *v)
+{
+	int n = 0;
 	objeto *vtab;
-	vtab = tabela_elementos(td,&n);
-	for (int i=0;i<n;i++) {
-		if(strcmp(vtab[i].chave,ch)==0) {
-			if(strcmp(vtab[i].valor,v)!=0)
-				printf("\nERRO - %s deveria ser classe '%s'\n",ch,v);
+	vtab = tabela_elementos(td, &n);
+	for (int i = 0; i < n; i++)
+	{
+		if (strcmp(vtab[i].chave, ch) == 0)
+		{
+			if (strcmp(vtab[i].valor, v) != 0)
+				printf("\nERRO - %s deveria ser classe '%s'\n", ch, v);
 			break;
 		}
 	}
 	free(vtab);
 }
 
-void teste_adiciona_comercio() {
-	tabela_dispersao *comercio = tabela_nova(101,hash_djbm);
-	tabela_dispersao *atividades = tabela_nova(47,hash_djbm);
+void teste_adiciona_comercio()
+{
+	tabela_dispersao *comercio = tabela_nova(101, hash_djbm);
+	tabela_dispersao *atividades = tabela_nova(47, hash_djbm);
 
 	char nome[30], ativ[30];
-	int res=0;
+	int res = 0;
 	strcpy(nome, "Casa comercial Desp1");
 	strcpy(ativ, "Desporto");
 	res = adiciona_comercio(nome, ativ, comercio, atividades);
-	if (res==1)
+	if (res == 1)
 		printf("\nCasa comercial adicionada com sucesso: %s\n", nome);
 	else
 		printf("\nERRO - Casa comercial nao adicionada: %s\n", nome);
-	verifica_valor(comercio,nome,"top");
+	verifica_valor(comercio, nome, "top");
 
 	strcpy(nome, "Casa comercial Desp2");
 	strcpy(ativ, "Desporto");
 	res = adiciona_comercio(nome, ativ, comercio, atividades);
-	if (res==1)
+	if (res == 1)
 		printf("\nCasa comercial adicionada com sucesso: %s\n", nome);
 	else
 		printf("\nERRO - Casa comercial no adicionada: %s\n", nome);
@@ -109,24 +165,24 @@ void teste_adiciona_comercio() {
 	strcpy(nome, "Casa comercial Ocul1");
 	strcpy(ativ, "Oculista");
 	res = adiciona_comercio(nome, ativ, comercio, atividades);
-	if (res==1)
+	if (res == 1)
 		printf("\nCasa comercial adicionada com sucesso: %s\n", nome);
 	else
 		printf("\nERRO - Casa comercial nao adicionada: %s\n", nome);
-	verifica_valor(comercio,nome,"top");
+	verifica_valor(comercio, nome, "top");
 
 	strcpy(nome, "Casa comercial Desp2");
 	strcpy(ativ, "Desporto");
 	res = adiciona_comercio(nome, ativ, comercio, atividades);
-	if (res==1)
+	if (res == 1)
 		printf("\nERRO - Casa comercial ja existente, adicionada erradamente: %s\n", nome);
-	verifica_valor(comercio,nome,"normal");
+	verifica_valor(comercio, nome, "normal");
 
-	if (tabela_numelementos(atividades)==2)
+	if (tabela_numelementos(atividades) == 2)
 		printf("\nTabela 'atividades_zona' tem 2 elementos - ok\n");
 	else
 		printf("\nERRO - Tabela 'atividades_zona' deveria ter 2 elementos\n");
-	if (tabela_numelementos(comercio)==3)
+	if (tabela_numelementos(comercio) == 3)
 		printf("\nTabela 'comercio_zona' tem 3 elementos - ok\n");
 	else
 		printf("\nERRO - Tabela 'comercio_zona' deveria ter 3 elementos\n");
@@ -135,26 +191,25 @@ void teste_adiciona_comercio() {
 	tabela_apaga(atividades);
 }
 
-
-heap* init_ruas_comercio()
+heap *init_ruas_comercio()
 {
 	heap *h = heap_nova(20);
 	if (!h)
 		return NULL;
-	heap_insere(h,"Rua do Amial_Paranhos",14);
-	heap_insere(h,"Rua Dom Joao IV_Bonfim",20);
-	heap_insere(h,"Rua Pinto Bessa_Bonfim",5);
-	heap_insere(h,"Rua da Telheira_Paranhos",7);
-	heap_insere(h,"Rua do Campo Lindo_Paranhos",13);
-	heap_insere(h,"Rua Latino Coelho_Bonfim",12);
-	heap_insere(h,"Rua do Vale Formoso_Paranhos",18);
-	heap_insere(h,"Rua de Augusto Lessa_Paranhos",10);
-	heap_insere(h,"Rua Sao Roque da Lameira_Campanha",17);
+	heap_insere(h, "Rua do Amial_Paranhos", 14);
+	heap_insere(h, "Rua Dom Joao IV_Bonfim", 20);
+	heap_insere(h, "Rua Pinto Bessa_Bonfim", 5);
+	heap_insere(h, "Rua da Telheira_Paranhos", 7);
+	heap_insere(h, "Rua do Campo Lindo_Paranhos", 13);
+	heap_insere(h, "Rua Latino Coelho_Bonfim", 12);
+	heap_insere(h, "Rua do Vale Formoso_Paranhos", 18);
+	heap_insere(h, "Rua de Augusto Lessa_Paranhos", 10);
+	heap_insere(h, "Rua Sao Roque da Lameira_Campanha", 17);
 	return h;
 }
 
-
-void teste_rua_menos_comercio() {
+void teste_rua_menos_comercio()
+{
 	heap *ruas_porto = init_ruas_comercio();
 	char *rua1;
 	rua1 = remove_rua_menos_comercio(ruas_porto, "Paranhos");
@@ -177,13 +232,11 @@ void teste_rua_menos_comercio() {
 		printf("\nERRO: nao existem ruas com casas comerciais na freguesia da Se\n");
 
 	printf("\nRUAS:\n");
-	heap_imprime(ruas_porto,1);
+	heap_imprime(ruas_porto, 1);
 	heap_apaga(ruas_porto);
 }
 
-
-
-int main ()
+int main()
 {
 	teste_adiciona_comercio();
 	teste_rua_menos_comercio();
