@@ -58,7 +58,7 @@ vetor *heap_ordena(vetor *v)
 		vetor_insere(vec_aux, vec->elementos[tam - 1 - i].str, i);
 	}
 	//ou podemos inverter assim:
-	/*    for (int i = 0; i < v_ord->tamanho / 2; i++)
+	/*    for (int i = 0; i < vec->tamanho / 2; i++)
     {
         v_elemento aux = vec->elementos[i];
         vec->elementos[i] = vec->elementos[vec->tamanho - i - 1];
