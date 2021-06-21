@@ -30,7 +30,6 @@ int adiciona_comercio(char *designacao, char *atividade, tabela_dispersao *comer
 	{
 		if (tabela_insere(comercio_zona, designacao, "normal") != TABDISPERSAO_OK)
 		{
-			printf("erro1\n");
 			return -1;
 		}
 	}
@@ -39,12 +38,10 @@ int adiciona_comercio(char *designacao, char *atividade, tabela_dispersao *comer
 	{
 		if (tabela_insere(comercio_zona, designacao, "top") != TABDISPERSAO_OK)
 		{
-			printf("erro2\n");
 			return -1;
 		}
 		if (tabela_insere(atividades_zona, atividade, atividade) != TABDISPERSAO_OK)
 		{
-			printf("erro3\n");
 			return -1;
 		}
 	}
