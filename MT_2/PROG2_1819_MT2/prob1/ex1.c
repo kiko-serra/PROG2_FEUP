@@ -20,6 +20,7 @@ int adiciona_comercio(char *designacao, char *atividade, tabela_dispersao *comer
 	{
 		return -1;
 	}
+	//se o comercio ja existir retornar logo 0
 	if (tabela_valor(comercio_zona, designacao) != NULL)
 	{
 		return 0;
